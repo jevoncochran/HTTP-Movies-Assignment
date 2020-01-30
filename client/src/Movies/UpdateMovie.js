@@ -26,6 +26,7 @@ const UpdateMovie = props => {
     useEffect(() => {
         console.log(movies);
         const movieToUpdate = movies.find(m => `${m.id}` === id);
+        console.log(movieToUpdate);
         
         if (movieToUpdate) {
             setSpecificMovie(movieToUpdate);
@@ -44,10 +45,10 @@ const UpdateMovie = props => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        axios.put(`http://localhost:5000/api/movies/${id}`, specificMovie)
+        axios.put(`http://localhost:5000/api/movies/${id}`, movies)
         .then(res => {
-            setMovies(res.data);
-            props.history.push('/')
+            setMovies([res.data, movies.filter(e => e.id !== movies.id)]); // this is only one movie
+            props.history.push(`/movies/${movies.id}`)
         })
         .catch(err => console.log(err))
     }

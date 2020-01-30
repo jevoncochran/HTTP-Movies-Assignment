@@ -29,12 +29,12 @@ const UpdateMovie = props => {
         console.log(movieToUpdate);
         
         if (movieToUpdate) {
-            setSpecificMovie(movieToUpdate);
+            const starsString = movieToUpdate.stars.join(',');
+            setSpecificMovie({...movieToUpdate, stars: starsString});
         }
     }, [movies, id])
 
     const handleChanges = e => {
-        e.persist();
         let value = e.target.value;
 
         setSpecificMovie({
@@ -45,10 +45,10 @@ const UpdateMovie = props => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        axios.put(`http://localhost:5000/api/movies/${id}`, movies)
+        axios.put(`http://localhost:5000/api/movies/${id}`, {...specificMovie, stars: specificMovie.stars.split(',')})
         .then(res => {
             setMovies([res.data, movies.filter(e => e.id !== movies.id)]); // this is only one movie
-            props.history.push(`/movies/${movies.id}`)
+            props.history.push(`/movies/${specificMovie.id}`)
         })
         .catch(err => console.log(err))
     }
@@ -59,6 +59,7 @@ const UpdateMovie = props => {
                 <input type="text" name="title" className="input" value={specificMovie.title} onChange={handleChanges} />
                 <input type="text" name="director" className="input" value={specificMovie.director} onChange={handleChanges} />
                 <input type="text" name="metascore" className="input" value={specificMovie.metascore} onChange={handleChanges} />
+                <input type="text" name="stars" className="input" value={specificMovie.stars} onChange={handleChanges} />
                 <button>Submit</button>
             </form>
         </div>

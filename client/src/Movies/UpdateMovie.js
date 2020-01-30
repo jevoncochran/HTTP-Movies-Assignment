@@ -10,7 +10,7 @@ const initialMovie = {
     stars: [],
   };
   
-const UpdateMovie = () => {
+const UpdateMovie = props => {
     const [movies, setMovies] = useState([]);
     const [specificMovie, setSpecificMovie] = useState(initialMovie);
     const { id } = useParams();
@@ -42,9 +42,19 @@ const UpdateMovie = () => {
         })
     };
 
+    const handleSubmit = e => {
+        e.preventDefault();
+        axios.put(`http://localhost:5000/api/movies/${id}`, specificMovie)
+        .then(res => {
+            setMovies(res.data);
+            props.history.push('/')
+        })
+        .catch(err => console.log(err))
+    }
+
     return (
         <div>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <input type="text" name="title" className="input" value={specificMovie.title} onChange={handleChanges} />
                 <input type="text" name="director" className="input" value={specificMovie.director} onChange={handleChanges} />
                 <input type="text" name="metascore" className="input" value={specificMovie.metascore} onChange={handleChanges} />

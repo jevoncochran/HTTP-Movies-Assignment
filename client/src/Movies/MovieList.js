@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import MovieCard from "./MovieCard";
+import UpdateMovie from "./UpdateMovie";
+
 export default class MovieList extends Component {
   constructor(props) {
     super(props);
@@ -30,8 +32,12 @@ export default class MovieList extends Component {
 
 function MovieDetails({ movie }) {
   return (
-    <Link to={`/movies/${movie.id}`}>
-      <MovieCard movie={movie} />
-    </Link>
+    <div>
+      <Link to={`/movies/${movie.id}`}>
+        <MovieCard movie={movie} />
+      </Link>
+          {/* <Route path="/update-movie/:id" component={UpdateMovie} /> */}
+    </div>
+    
   );
 }
